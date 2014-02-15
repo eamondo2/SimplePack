@@ -1,0 +1,4 @@
+name: SimplePack
+main: com.eamondo2.testplugin.PluginClass
+version: 2.5
+author: eamondo2
