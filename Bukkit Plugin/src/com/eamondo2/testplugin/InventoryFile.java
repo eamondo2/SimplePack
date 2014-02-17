@@ -51,5 +51,40 @@ public class InventoryFile {
 		
 		
 	}
+	public static Object loadFile(File file){
+		if (file == null) return null;
+		
+		FileConfiguration conf = YamlConfiguration.loadConfiguration(file);
+		
+		int count = 0;
+		count = conf.getInt("Count");
+		return count;
+		
+		
+		
+		
+		
+		
+	}
+	public static void saveFile(File file, Object obj){
+		if (file == null) return;
+		if (obj == null) return;
+		file.delete();
+		FileConfiguration conf = YamlConfiguration.loadConfiguration(file);
+		int count = (int) obj;
+		conf.set("Count", count);
+		try{
+			conf.save(file);
+			
+		}catch(IOException e){
+			return;
+		}
+		
+		
+		
+		
+	}
+	
+	
 	
 }
