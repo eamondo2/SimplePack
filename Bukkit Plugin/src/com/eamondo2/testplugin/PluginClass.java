@@ -93,6 +93,7 @@ public final class PluginClass extends JavaPlugin implements Listener {
 			//getLogger().info("BACKPACK CRAFTED");
 			HumanEntity entity = event.getWhoClicked();
 			Player p = (Player) entity;
+			//Not really neccessary, however, makes it nicer for the player.
 			p.updateInventory();
 
 			
