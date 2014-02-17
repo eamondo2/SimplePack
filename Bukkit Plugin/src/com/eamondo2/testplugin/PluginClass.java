@@ -1,5 +1,6 @@
 package com.eamondo2.testplugin;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -18,7 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -51,6 +51,15 @@ public final class PluginClass extends JavaPlugin implements Listener {
 		getLogger().info("SimplePack unloaded");
 		InventoryFile.saveFile(countyml, count);
 		
+		for (int i = 0; count >= i; i++){
+			File savefile = new File(path + i + "_inv.yml");
+			InventoryFile.saveInv(inventoryCount.get(i), savefile, true);
+			
+		
+			
+			
+		}
+		
 		
 		
 		
@@ -81,7 +90,7 @@ public final class PluginClass extends JavaPlugin implements Listener {
 			//event.setResult(res);
 			event.setCurrentItem(stack);
 			
-			getLogger().info("BACKPACK CRAFTED");
+			//getLogger().info("BACKPACK CRAFTED");
 			HumanEntity entity = event.getWhoClicked();
 			Player p = (Player) entity;
 			p.updateInventory();
@@ -103,12 +112,14 @@ public final class PluginClass extends JavaPlugin implements Listener {
 	public void playerCloseEvent (InventoryCloseEvent event){
 		Player p = (Player) event.getPlayer();
 		Inventory closed = event.getInventory();
-		
-		ItemStack bak = new ItemStack(Material.AIR);
+		boolean exists = false;
+		ArrayList<ItemStack> bak = new ArrayList<ItemStack>();
+		int temp_count = 0;
 		if (closed.contains(Material.CHEST)){
 			if (closed.getName().equals("BackPack")){
 				for (ItemStack s : closed){
-					if(s.getType().equals(Material.CHEST)){
+					if (s == null){continue;}
+					if(s.getType() == Material.CHEST){
 						if (s.hasItemMeta()){
 							ItemMeta meta = s.getItemMeta();
 							String case1 = "BackPack";
@@ -116,17 +127,27 @@ public final class PluginClass extends JavaPlugin implements Listener {
 								
 								//getLogger().info("BP INTERCEPT");
 								closed.remove(s);
-								bak = s;
-								p.sendMessage("You cannot put a backpack inside another backpack!");
-								break;
+								bak.add(s);
+								
+								exists = true;
+								continue;
 							}
 							
 						}
+						
 					}
+					temp_count += temp_count;
+					continue;
 				}
 				
-				Location loc = p.getLocation();
-				p.getWorld().dropItem(loc, bak);
+				if (exists){
+					p.sendMessage("You cannot put a backpack inside another backpack!");
+					Location loc = p.getLocation();
+					for (ItemStack tempstack : bak){
+						p.getWorld().dropItem(loc, tempstack);
+					}
+				
+				}
 			}
 		}
 		
